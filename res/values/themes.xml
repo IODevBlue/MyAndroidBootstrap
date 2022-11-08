@@ -1,0 +1,54 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.AppName.Base" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+
+    </style>
+
+    <style name="Theme.Light" parent="Theme.AppName.Base">
+    <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/main_blue</item>
+        <item name="colorPrimaryVariant">@color/main_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:textColor">?colorSecondary</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/black_54</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+
+        
+    </style>
+
+    <style name="Theme.AppName.Dark">
+        <item name="colorPrimary">@color/black_54</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+
+        <item name="colorSecondary">@color/white</item>
+        <item name="android:textColor">@color/dirty_white</item>
+        <item name="android:colorBackground">@color/black_54</item>
+
+        <item name="popupMenuBackground">@color/black_54</item>
+
+     </style>
+
+    <style name="Theme.AppName.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="Theme.AppName.Dark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.AppName.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.AppName.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    
+</resources>

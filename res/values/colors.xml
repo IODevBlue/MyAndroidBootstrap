@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_blue">#F20109B6</color>
+    <color name="main_blue_variant">#F2020667</color>
+    <color name="light_blue">#FF038BE5</color>
+    <color name="light_blue_variant">#FF014F83</color>
+</resources>
