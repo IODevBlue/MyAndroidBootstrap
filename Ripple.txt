@@ -1,0 +1,120 @@
+* ADD A DEFAULT RIPPLE TO A VIEW
+--------------------------------
+- The default ripple can be added by setting any of these to the android:background attribute
+"?android:attr/selectableItemBackground" - Ripple effect with border.
+"?android:attr/selectableItemBackgroundBorderless" - Ripple effect without border.
+
+
+* ADD CUSTOM RIPPLE TO A VIEW
+-----------------------------
+- create a new drawable resource with a <ripple /> root.
+<ripple
+    xmlns:android="http://schemas.android.com/apk/res/android"
+     android:color="@color/light_blue"
+    >
+
+    <item android:id="@+id/mask"
+        android:drawable="@color/white"/>
+
+</ripple>
+NOTE: The id of the mask MUST be explicitly android:id="@+id/mask".
+The item represents a mask and when present, the ripple effect will be masked/covered on top of that layer before it is drawn over the view itself and is constrained by the view bounds.
+If the mask is absent, then the ripple will be drawn on top of the parent background which would not be constrained by the view bounds.
+
+So take the mask as something that would represent the background of the View.
+- set the above ripple as a background to a view.
+
+
+* ADD A RIPPLE PROGRMATICALLY
+-----------------------------
+- Create a RippleDrawable object using the background of the view you want a ripple on.
+val button = findViewById<Button>(R.id.button)
+val rippleDrawable = button.background as RippleDrawable
+button.setOnTouchListener {view, motionEvent ->
+	when(view.id) {
+		case R.id.button -> {
+			rippleDrawable.apply {
+				setHotspot(motionEvent.X, motionEvent.Y)
+				color = R.color.blue
+			}
+	}
+}
+- Method 1
+/**
+ * Creates a [RippleDrawable].
+ *
+ * This method generates a RippleDrawable with specified background and ripple colors,
+ * along with a rounded rectangle shape.
+ *
+ * @param normalColor The background/neutral color.
+ * @param rippleColor The color of the dynamic ripple.
+ * @return A valid [RippleDrawable] instance.
+ */
+fun createRippleDrawable(@ColorInt normalColor: Int, @ColorInt rippleColor: Int): RippleDrawable {
+    // TODO: Test this method
+    return RippleDrawable(
+        ColorStateList(
+            arrayOf(
+                intArrayOf(android.R.attr.state_pressed),
+                intArrayOf(android.R.attr.state_focused),
+                intArrayOf(android.R.attr.state_activated),
+                intArrayOf()
+            ),
+            intArrayOf(rippleColor, rippleColor, rippleColor, normalColor)
+        ),
+        ColorDrawable(normalColor),
+        ShapeDrawable(RoundRectShape(floatArrayOf(3F, 3F, 3F, 3F, 3F, 3F, 3F, 3F), null, null)).apply {
+            paint.color = normalColor
+        }
+    )
+}
+
+- Method 2
+/**
+ * Creates a [RippleDrawable].
+ *
+ * This method generates a RippleDrawable with specified background and ripple colors.
+ * It is suitable for API level 21 (Lollipop) and above.
+ *
+ * @param normalColor The background/neutral color.
+ * @param rippleColor The color of the dynamic ripple.
+ * @return A valid [RippleDrawable] instance.
+ */
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+fun createRippleDrawable(@ColorInt normalColor: Int, @ColorInt rippleColor: Int): RippleDrawable {
+    val states = arrayOf(
+        intArrayOf(android.R.attr.state_pressed),
+        intArrayOf(android.R.attr.state_focused),
+        intArrayOf(android.R.attr.state_activated),
+        intArrayOf()
+    )
+
+    val colors = intArrayOf(rippleColor, rippleColor, rippleColor, normalColor)
+
+    return RippleDrawable(ColorStateList(states, colors), ColorDrawable(normalColor), null)
+}
+
+- Extension function on a View object.
+/**
+ * Create and set a StateListDrawable with Ripple effect.
+ *
+ * This method applies a StateListDrawable with a RippleDrawable as the foreground
+ * and a selected background for the selected state. It uses a custom ripple mask.
+ *
+ * @param selectedBackground Drawable for the background on the selected state.
+ * @param mask Drawable resource used as the ripple mask.
+ */
+internal fun View.setCustomRipple(
+    selectedBackground: Drawable,
+    mask: Drawable
+) {
+    val highlightColor = context.getValueFromAttr(android.R.attr.colorControlHighlight)
+    val colorStateList = ColorStateList.valueOf(highlightColor)
+    val unselected = RippleDrawable(colorStateList, null, mask)
+    val states = StateListDrawable()
+
+    states.addState(intArrayOf(android.R.attr.state_selected), selectedBackground)
+    states.addState(intArrayOf(), ColorDrawable(Color.TRANSPARENT))
+    background = states
+    foreground = unselected
+}

@@ -1,0 +1,59 @@
+* CHECK IF A VIEW IS ATTACHED
+-----------------------------
+	if (view.isAttached) {
+ 		//Perform task
+	} else {
+		addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+                	override fun onViewAttachedToWindow(p0: View?) {
+                    		p0.removeOnAttachStateChangeListener(this)
+                    		//Perform task.
+                	}
+
+                	override fun onViewDetachedFromWindow(p0: View?) {}
+
+            	})
+	}
+
+* CHECK LOCATION OF VIEW ON SCREEN
+----------------------------------
+val arr = IntArray(2)
+getLocationOnScreen(arr)
+
+* GET THE ACTIVITY A VIEW IS ASSOCIATED WITH FROM ITS CONTEXT:
+--------------------------------------------------------------
+
+    private Activity getActivity() {
+
+        Context context = getContext();
+
+        while (context instanceof ContextWrapper) {
+
+            if (context instanceof Activity) {
+
+                return (Activity)context;
+
+            }
+
+            context = ((ContextWrapper)context).getBaseContext();
+
+        }
+
+        throw new IllegalStateException();
+
+    }
+      
+* EDIT A DRAWABLE FROM A VIEW
+------------------------------------
+- Call the mutate() function on the Drawable;
+	textView.background.mutate()
+- Then edit the Drawable as you like.     
+
+* CHECK IF A VIEW IS ATTACHED TO THE LAYOUT COMPLETELY
+-------------------------------------------------------
+(view).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+	@Override
+	public void onGlobalLayout () {	    
+		(view).getViewTreeObserver().removeOnGlobalLayoutListener(this);
+		//Perform action here
+	}
+});    

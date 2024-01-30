@@ -1,0 +1,62 @@
+package: com.google.android.material.bottomnavigation.BottomNavigationView
+         
+* SETUP PROCEDURE
+-----------------
+- Create a menu resources with all the the <item/> which would all have their:
+	- id, title and icon
+- Create a BottomNavigationView in xml and add the above menu using app:menu.
+- Setup a navigation file (nav_graph.xml) in /res/navigation/:
+<navigation 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/yourStashFragment">
+
+    <fragment
+        android:id="@+id/yourStashFragment"
+        android:name="(full_fragment_name)"
+        android:label="fragment_your_stash"
+        tools:layout="@layout/fragment_your_stash" >
+        <action
+            android:id="@+id/action_yourStashFragment_to_galleryMemesFragment"
+            app:destination="@id/galleryMemesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/galleryMemesFragment"
+        android:name="(full_fragment_name)"
+        android:label="fragment_gallery_memes"
+        tools:layout="@layout/fragment_gallery_memes" >
+        <action
+            android:id="@+id/action_galleryMemesFragment_to_unstashedFragment"
+            app:destination="@id/unstashedFragment" />
+    </fragment>
+     (other <fragment />).
+</navigation>
+
+- Setup a FragmentContainerView above the BottomNavigation as follows:
+<androidx.fragment.app.FragmentContainerView
+        android:id="@+id/activity_main_fragment_container_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+- Use the methods below to do the final setup:
+ private void readyFragmentNavigation(){
+	bnv = findViewById(R.id.activity_main_bottom_nav);
+	NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_fragment_container_view);
+	if (navHostFragment != null) {
+	  NavController navController = findNavController(navHostFragment);
+	  NavigationUI.setupWithNavController(bnv, navController);
+	}
+  }
+
+  private NavController findNavController (@NonNull Fragment fragment){
+      if(fragment instanceof NavHostFragment)
+        return ((NavHostFragment)fragment).getNavController();
+      View view = fragment.getView();
+      if(view!=null)
+        return Navigation.findNavController(view);
+      throw new IllegalStateException("Fragment "+fragment+" does not have a NavController set");
+  }

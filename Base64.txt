@@ -1,0 +1,21 @@
+/**
+ * Extension function to convert a [String] to a [Base64].
+ *
+ * Decrypt the source [String] using [fromBase64].
+ * @return [UUID] representation of provided [String].
+ */
+fun String.toBase64(): String { //Working
+    return Base64.encodeToString(this.toByteArray(Charset.defaultCharset()), Base64.DEFAULT)
+}
+
+/**
+ * Extension function to convert a [Base64] string representation back to its original [String].
+ * @return Original [String] representation of the provided [UUID] string.
+ */
+fun String.fromBase64(): String? { //Working
+    return try {
+        String(Base64.decode(this, Base64.DEFAULT), Charset.defaultCharset())
+    } catch (e: IllegalArgumentException) {
+        null // Invalid Base64 string
+    }
+}

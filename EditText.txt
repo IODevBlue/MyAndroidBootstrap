@@ -1,0 +1,38 @@
+android:textSelectHandle="@drawable/edit_text_claret" [Drawable for the text selector]
+android:textCursorDrawable="@drawable/edit_text_claret" [Drawable for the claret]
+
+* CHANGE COLOR OF ICON IN EDITTEXT
+----------------------------------
+Drawable d = getResources().getDrawable(R.drawable.ic_something);
+Drawable dd = DrawableCompat.wrap(d);
+DrawableCompat.setTint(dd, (color int); 
+editText.setCompoundDrawables(null, null, drawable, null);
+
+You need to call DrawableCompat.wrap(d) so that you can tint the wrapped Drawable across all API levels.
+
+
+*ADD A CLEAR ICON AT THE END OF AN EDIT TEXT DYNAMICALLY WHEN TYPING
+--------------------------------------------------------------------
+override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+	p0?.let {
+		if(it.isEmpty()) {
+			val start = compoundDrawablesRelative[0] 
+			setCompoundDrawablesRelativeWithIntrinsicBounds(start, null, null, null)
+		} else {
+			var end = compoundDrawablesRelative[2]
+			if(end == null) {
+				val start = compoundDrawablesRelative[0]
+				end = DrawableCompat.wrap(ContextCompat.getDrawable(context, 								R.drawable.ic_baseline_clear_24)!!)
+			}
+			setCompoundDrawablesRelativeWithIntrinsicBounds(start, null, end, null)
+		}
+	}
+
+* MAKE THE COLOR OF THE EDITTEXT CURSOR THE SAME AS THE TEXT COLOR
+------------------------------------------------------------------
+- Add this to the xml
+	android:textCursorDrawable="@null"
+
+* EDITTEXT GAINS FOCUS ON APP START
+-----------------------------------
+- Retrieve the root view of the activity layout and give request focus on it on app start.

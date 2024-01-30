@@ -1,0 +1,9 @@
+* SETUP
+-------
+- Create and Observer like so:
+Observer<List<Uri>> arrayListObserver = uris -> {
+		//Action to carry out
+	  }
+- Connect it to a LiveData like so:
+mainActivityViewModel.getLiveData().observe(this, arrayListObserver);
+	  

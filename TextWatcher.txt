@@ -1,0 +1,12 @@
+* The afterTextChanged() is where you can filter each text from multiple EditText:
+
+override fun afterTextChanged(p0: Editable?) {
+            Logger.noteLog("MainFragment: afterTextChanged() is called. Editable = ${p0.toString()}")
+            if(p0 == firstEditText.text) {
+		//Use it                
+
+            } else if (p0 == secondEditText) {
+		//Use it               
+            } 
+	    //and so on...
+}

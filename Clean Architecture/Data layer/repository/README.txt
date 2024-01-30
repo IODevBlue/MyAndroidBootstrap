@@ -1,0 +1,1 @@
+- All repositories here should implement the repository interfaces from the domain layer. 

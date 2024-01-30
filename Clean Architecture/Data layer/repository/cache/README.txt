@@ -1,0 +1,1 @@
+- Files in this package should have the 'DataCache' suffix. eg. (Entityclass name)DataCache. 

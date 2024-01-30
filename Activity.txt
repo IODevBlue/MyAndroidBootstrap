@@ -1,0 +1,9 @@
+* RECEIVE BACK PRESSED KEY EVENT
+-------------------------------- 
+public boolean dispatchKeyEvent (KeyEvent event) {
+	if (event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+	  //Perform your action here.
+	  return true;
+	}
+	return super.dispatchKeyEvent(event);
+  }

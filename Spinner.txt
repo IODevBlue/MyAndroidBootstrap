@@ -1,0 +1,20 @@
+* INITIALIZING A SPINNER:
+-------------------------
+private fun initspinner(view: View, bund: Bundle?) { //Bundle is from Fragment or Activity 
+	spinner = view.findViewById(R.id.spinner) as AppCompatSpinner
+
+        val spinnerAdapter = 
+		ArrayAdapter(mContext, android.R.layout.simple_spinner_item, SpinnerArrayLists.spinner)
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter =  spinnerAdapter
+
+        bund?.let{spinner.setSelection(bund.getInt("spinner"))}
+        spinner.onItemSelectedListener = myListener //An AdapterView.OnItemSelectedListener
+
+}
+- In the listener implementation, the method of concern is:
+override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {}
+
+p2 = The position of the View in the adpater
+p3 = The row id of the item that is selected.

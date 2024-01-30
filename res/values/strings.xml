@@ -1,5 +1,23 @@
 <resources>
+
+
+
+    <!-- Test Resources-->
+    
     <string name="test_name">IO DevBlue</string>
     <string name="test_occupation">Java Programmer</string>
     <string name="test_email">iodevblue@gmail.com</string>
+
+    <string name="test_aux_text">Java and Kotlin Native Android Developer</string>
+
+
+
+    <!-- Content Descriptions -->
+    
+    <string name="image_button">Image Button</string>
+
+    <string name="image_view">Image View</string>
+    <string name="floating_action_button">Floating Action Button</string>
+
+ 
 </resources>

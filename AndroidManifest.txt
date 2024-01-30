@@ -1,0 +1,14 @@
+<activity 
+	android:windowSoftInputMode="adjustResize" 
+	[The keyboard anchors and pushes the entire activity UI from the bottom to its full length]
+ 
+	android:theme="@style/Theme.Distress.NoActionBar" [Light No ActionBar Theme as default theme]
+	<intent-filter>
+		<action android:name="android.intent.action.MAIN" /> [The entry Activity]
+
+                <category android:name="android.intent.category.LAUNCHER" /> 
+		[The Activity should be at the launcher app and can start the app]
+
+        </intent-filter>
+/>
+-

@@ -1,0 +1,2 @@
+- All repositories here are to be interfaces and each should have names starting with uppercase 'I'.
+- All repositories should extend IBaseRepository.

@@ -1,0 +1,15 @@
+* LISTEN FOR CHANGES IN MANY COMPOUND BUTTONS USING ONE ONCHECKEDCHANGELISTENER
+override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+            when(p0) {
+                is CheckBox ->
+                    if(p0 === checkBox1){
+                       	if (p1) //Do something 
+			else //Not checked
+                          
+                       
+                    } else if //another checkbox
+		is RadioButton ->
+		    
+            }
+
+        }

@@ -1,0 +1,26 @@
+ 
+* ACTIVATE VOICE SEARCH
+-----------------------
+private fun voiceSearch() {
+        val activity = scanForActivity(context) ?: return
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        if (!voiceSearchPrompt.isNullOrEmpty()) {
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, voiceSearchPrompt)
+        }
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH)
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+        activity.startActivityForResult(intent, REQUEST_VOICE_SEARCH)
+    }
+
+* VERIFY IF VOICE SEARCH IS ENABLED
+-----------------------------------
+private val isVoiceAvailable: Boolean
+        @SuppressLint("QueryPermissionsNeeded")
+        get() {
+            if (isInEditMode) {
+                return true
+            }
+            val pm = context.packageManager
+            val activities = pm.queryIntentActivities(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0)
+            return activities.isNotEmpty()
+        }

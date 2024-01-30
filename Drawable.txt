@@ -1,0 +1,5 @@
+* EDIT A DRAWABLE FROM A VIEW
+------------------------------------
+- Call the mutate() function on the Drawable;
+	textView.background.mutate()
+- Then edit the Drawable as you like.

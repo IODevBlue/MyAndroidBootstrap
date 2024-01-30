@@ -1,0 +1,94 @@
+Full class name: com.google.android.material.tabs.TabLayout
+
+* USAGE (with ViewPager2)
+-------------------------
+- The below steps can be done in your custom FragmentStateAdapter.
+- Create an ArrayList to hold all Fragment instances:
+	ArrayList<Fragment> fragmentList = new ArrayList<>();
+
+- Add all Fragment instances as they would appear on the UI from left to right:
+	fragmentList.add(Fragment1.newInstance("fragment"));
+	fragmentList.add(Fragment2.newInstance("fragment"));
+	fragmentList.add(Fragment3.newInstance("fragment"));
+	fragmentList.add(Fragment4.newInstance("fragment"));
+
+- Create a String ArrayList for the titles on each tab:
+	ArrayList<String> tabTitles = new ArrayList<>();
+
+- Add each tab title as they would appear on the UI from from left to right:
+	tabTitles.add("Home");
+	tabTitles.add("Pictures");
+	tabTitles.add("Videos");
+	tabTitles.add("GIFs");
+
+- Let your Activity implement TabLayoutMediator.TabConfigurationStrategy
+
+- Override the onConfigureTab():
+	@Override public void onConfigureTab (
+		@NonNull TabLayout.Tab tab, int position) { 
+			tab.setText(tabTitles.get(position)); 
+	}
+
+- Create a class which extends FragmentStateAdapter as follows:
+	class MyFragmentStateAdapter extends FragmentStateAdapter {
+    		private final ArrayList<Fragment> fragments;
+	
+		//constructor
+		public YourStashFragmentAdapter (@NonNull Context context, 
+			ArrayList<Fragment> fragmentList) {
+      			super(context);
+      			this.fragments = fragmentList;
+    		}
+
+		@Override
+		public long getItemId (int position) {
+	   		return super.getItemId(position);
+    		}
+
+    		@NonNull
+		@Override
+		public Fragment createFragment (int position) {
+      			switch (position) {
+		 		case 0:
+		   			Fragment frag = fragments.get(0);
+		   			return frag;
+		 		case 1:
+		   			Fragment frag1 = fragments.get(1);
+		   			return frag1;
+		 		case 2:
+		   			Fragment frag2 = fragments.get(2);
+		   			return frag2;
+		 		case 3:
+		   			Fragment frag3 = fragments.get(3);
+		   			return frag3;
+		 		default:
+		   		return new Fragment();
+	   		}
+   		}
+
+    		@Override
+			public int getItemCount () {
+	   			return fragments.size();
+	 		}
+  		}
+
+- Create an instance of your FragmentStateAdapter using the arraylist of Fragments:
+	MyFragmentStateAdapter myFragAdapter = 
+		new MyFragmentStateAdapter(this, fragmentList);
+
+- Retrieve your TabLayout and ViewPager2 from the xml resources in onCreate():
+	tabLayout = findViewById(R.id.your_stash_tablayout);
+	viewPager2 = view.findViewById(R.id.your_stash_viewpager);
+
+- Optional setup for the TabLayout:
+	setTabIndicatorFullWidth(false) - if indicator should cover entire tab.
+	setTabIndicatorAnimationMode(
+		TabLayout.INDICATOR_ANIMATION_MODE_ELASTIC
+	) - If indicator should expand on swipe.
+
+- Set the custom FragmentStateAdapter as the adapter for the ViewPager2:
+	viewPager2.setAdapter(myFragAdapter);
+
+- Create a TabLayoutMediator and bind the ViewPager2 and TabLayout together:
+	new TabLayoutMediator(tabLayout, viewPager2, this).attach();
+	

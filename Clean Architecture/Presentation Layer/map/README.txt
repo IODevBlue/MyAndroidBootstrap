@@ -1,0 +1,1 @@
+- All objects here should implement the Map<T, R> interface or it's derivatives from the domain layer.

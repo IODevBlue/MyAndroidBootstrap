@@ -1,0 +1,45 @@
+*** NOTE ***
+------------
+- Adding other Views apart from Fragments would throw an IllegalStateException.
+- addView(view): Should be only called when the View is associated with a Fragment, this is the View returned by onCreateView() of a Fragment.
+- When a Fragment's View is being created, a tag is assigned to it in order to associate it with a Fragment instance by calling View.setTag(). You can use View.getTag() to retrieve the tag.
+- Fragments added or referenced via name/class attaribute are not kept by proguard so you would have to manually add a rule for any added.
+- When you use NavHostFragment from androidx in the name attribute, you cannot use findNavController() in onCreate() of the Activity.
+
+*** XML ***
+-----------
+* id:- ID in the XML is very important. If it is not included and a class/name attribute is declared, it throws an IllegalStateException. However if these attributes are absent, then the ID is optional. But you need the ID to perform FragmentTransactions.
+
+* name:- The name of the default Fragment. If this is going to be a navigation host, then you'd use the Host Fragment provided by androidx = androidx.navigation.fragment.NavHostFragment
+
+* tag:- Optional attribute that associates a tag with the Fragment specified in the layout.
+
+* animateLayoutChanges:- If set to true, it would cause an UnsupportedOperationException on Android 18 and above because layout animations have been disabled for FragmentContainerView on these platforms which conflicts with animations and transitions on Fragment APIs. ViewGroups.setLayoutTransitions() must be called for Fragment Transactions to work properly.
+
+* defaultNavHost:- If true, it means that the Fragment specified in the name/class attribute is going to be the primary Fragment for navigating all other Fragments.
+
+* navGraph:- The navigation graph for possible Fragment destinations.
+
+*** USAGE ***
+-------------
+- Add FragmentContainerView to your layout:
+<androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentcontainerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+/>
+- Add Fragment instance to the FragmentContainerView:
+supportFragmentManager.beginTransaction().add(R.id.fragmentcontainerview, MyFragment::class.java, null).commit()
+===============================================================================
+
+* ADDING A DEFAULT FRAGMENT.
+- Use the android:name attribute and specify the Fragment class.
+android:name:"com.example.MyFragment"
+The above declaration initialized the Fragment internally.
+- Use the android:class attribute and specify the Fragment class.
+
+* ADD A CUSTOM TRANSITION ANIMATION.
+- Call one of the overloaded FragmentTransactions.setCustomAnimation()
+supportFragmentManager.beginTransaction().setCustonMAnimations(R.anim.slide_in_from_right, R.anim.slide_in_to_left, R.anim.slide_in_from_left, R.anim.slide_in_to_right).replace(R.id.fragmentcontainerview, MyFragment::class.java).commit()
+				OR
+supportFragmentManager.beginTransaction().setCustonMAnimations(android.R.anim.slide_in_left, R.anim.slide_in_left).replace(R.id.fragmentcontainerview, MyFragment::class.java).commit()

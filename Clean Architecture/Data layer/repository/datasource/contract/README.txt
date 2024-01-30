@@ -1,0 +1,2 @@
+- This should contain interfaces for every datasource that retrieves content for specific objects defined in the entity package.
+- Naming nomenclature : (Entitiy name)DataSource

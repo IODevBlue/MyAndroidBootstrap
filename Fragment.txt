@@ -1,0 +1,67 @@
+*** NOTE ***
+------------
+- <fragment> doesn't allow replacement of the Fragment defined statically in XML, use a <FragmentContainerView> instead.
+
+* SAVE FRAGMENT STATE USING SAVEDSTATE
+--------------------------------------
+- Save in a SavedState as follows.
+	val savedState = supportFragmentManager.saveFragmentInstanceState(fragment)
+
+- Then retrieve it:
+	fragment.setInitialSavedState(savedState)
+
+* SAVE FRAGMENT STATE FOR MULTIPLE FRAGMENTS IN SAVEDSTATE (eg. WHEN USING A CUSTOM BOTTOM NAVIGATION etc)
+----------------------------------------------------------------------------------------------------------
+- Create a variable to hold the tag of the current Fragment
+	val currentSelectedFragmentTag = "HOME"
+
+- Create a SparseArray<Fragment.SavedState> to hold all SavedState for each Fragment.
+	val savedStateSparseArray =  SparseArray<Fragment.SavedState>()
+
+- Use this utility method createFragment() to create a Fragment:
+    private fun createFragment(fragment: Fragment, tag: String, menuID: Int) {
+        fragment.setInitialSavedState(savedStateSparseArray[menuID])
+        fragmentManager.beginTransaction().replace(R.id.fragmentcontainerview, fragment, tag).commit()
+
+    }
+
+- Use this utility method to save state for a Fragment:
+	private fun saveFragmentState(id: Int, tag: String) {
+        	val currentFragment = fragmentManager.findFragmentByTag(tag)
+        	if (tag != null) {
+            		savedStateSparseArray.put(tag, 
+                	fragmentManager.saveFragmentInstanceState(currentFragment))
+        	}
+        	currentSelectedFragmentTag = tag
+        
+    	}
+
+- Use this utility method to swap fragments in the custom bottom navigation bar:
+	private fun swapFragment(menuID: Int, tag: String) {
+        	if (fragmentManager.findFragmentByTag(tag) == null) { //Create a fresh Fragment
+            		saveFragmentState(tag)
+            		createFragment(fragment: Fragment, tag: String, menuID: Int)
+        	}
+    	}
+
+- Then in the onClick listener for each bottom navigation bar menu item, just call the swapFragment() for each item passing in the menuID and tag String.
+
+- In onSavedInstanceState(), save the SparseArray and the current Fragment tag:
+	outState.putSparseParcelableArray("Container_Key", savedStateSparseArray)
+	outState.putString("Current_Tab", currentSelectedFragmentTag)
+
+- In onCreate(), retrieve the SparseArray and set the correct tab. If the onCreate() bundle is null, then select the default tab which is the Home tab. Recommend to use the swapFragment() which also creates a Fragment as well.
+
+- Override the onBackPressed() as well and do this: 
+    override fun onBackPressed() {
+        fragmentManager.fragments.forEach { fragment->
+            if(fragment != null && fragment.isVisible) {
+                with(fragment.childFragmentManager) {
+                    if (backStackEntryCount > 0) { //If there are still items to pop...
+                        popBackStack()
+                        return
+                    }
+                }
+            }
+        }
+    }

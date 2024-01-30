@@ -1,0 +1,1 @@
+- All Objects here should have an 'Entity' suffix.

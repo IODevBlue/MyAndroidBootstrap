@@ -1,0 +1,8 @@
+* GENERATE A UUID STRING FROM A URI
+-----------------------------------
+public static String createUUIDKey(Uri uri) {
+	return UUID.nameUUIDFromBytes(uri.toString().getBytes()).toString().replaceAll(Pattern.quote("-"), "");
+  }
+KOTLIN:
+   val string = UUID.nameUUIDFromByte("${userEntity.firstName}${userEntity.lastName}${userEntity.nickName}"
+            .toByteArray()).toString().replace(Pattern.quote("-"), "")

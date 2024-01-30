@@ -1,0 +1,28 @@
+* SELECT DARK/LIGHT THEME AT APP START:
+--------------------------------------
+- Use an app wide shared preference:
+   class MainApplication: Application(){
+	lateinit var preferences: SharedPreferences
+    	var activateDarkMode = false
+
+    	override fun onCreate() {
+        	super.onCreate()
+      		activateDarkMode = preferences.getBoolean("activateDarkMode", false)
+	}
+   }
+- Then retrieve it in an Activity before the call to super.onCreate() like so:
+   override fun onCreate(savedInstanceState: Bundle?) {
+ 	activateDarkMode = (application as MainApplication).activateDarkMode
+        if (activateDarkMode) setTheme(R.style.Theme_Distress_Dark_NoActionBar)
+        else setTheme(R.style.Theme_Distress_NoActionBar)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+}
+- Make sure to save the current theme into the sharedpreference in onPause() of the Activity:
+   override fun onPause() {
+        super.onPause()
+        prefs.edit().apply {
+            putBoolean("activateDarkMode", activateDarkMode)
+            apply()
+        }
+    }

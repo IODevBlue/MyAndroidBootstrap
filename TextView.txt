@@ -1,0 +1,3 @@
+- Make a TextView show text on one line.
+Just add the below attribute in XML and you are done!
+android:maxLines="1"
